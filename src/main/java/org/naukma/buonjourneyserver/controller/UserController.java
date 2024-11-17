@@ -1,15 +1,18 @@
 package org.naukma.buonjourneyserver.controller;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.naukma.buonjourneyserver.dto.ChangePasswordDto;
+import org.naukma.buonjourneyserver.dto.updateDto.ChangePasswordDto;
+import org.naukma.buonjourneyserver.exceptions.ExceptionHelper;
 import org.naukma.buonjourneyserver.dto.UserDto;
-import org.naukma.buonjourneyserver.dto.UserUpdateDto;
+import org.naukma.buonjourneyserver.dto.updateDto.UserUpdateDto;
 import org.naukma.buonjourneyserver.exceptions.InvalidOldPasswordException;
 import org.naukma.buonjourneyserver.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,13 +25,27 @@ public class UserController {
     private final IUserService userService;
 
     @PostMapping
-    public UserDto createUser(UserDto userDto) {
-        return userService.createUser(userDto);
+    public UserDto createUser(@RequestBody @Valid UserDto userRequestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = ExceptionHelper.formErrorMessage(bindingResult);
+            throw new ValidationException(message);
+        }
+        UserDto userDto = userService.createUser(userRequestDto);
+        log.info("User created with ID: {}", userDto.getId());
+        return userDto;
     }
 
     @PutMapping("/{id}")
-    public UserDto updateUser(@PathVariable Long id, UserUpdateDto userDto) {
-        return userService.updateUser(userDto);
+    public UserDto updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateDto userUpdateDto,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = ExceptionHelper.formErrorMessage(bindingResult);
+            throw new ValidationException(message);
+        }
+        userUpdateDto.setId(id);
+        UserDto userDto = userService.updateUser(userUpdateDto);
+        log.info("User updated with ID: {}", userDto.getId());
+        return userDto;
     }
 
     @DeleteMapping("/{id}")
@@ -49,14 +66,6 @@ public class UserController {
         try {
             userService.changePassword(request);
             return ResponseEntity.ok("The password was changed successfully");
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-            return ResponseEntity.notFound().build();
-        } catch (InvalidOldPasswordException e) {
-            e.printStackTrace();
-            String errorCode = e.getErrorCode();
-            String errorMessage = e.getMessage();
-            return ResponseEntity.badRequest().body(errorCode + ": " + errorMessage);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error to change password.");
