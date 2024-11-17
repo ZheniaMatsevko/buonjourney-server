@@ -1,6 +1,5 @@
 package org.naukma.buonjourneyserver.security.auth.authentication;
 
-import org.naukma.buonjourneyserver.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
-    private final IUserRepository userRepository;
-    @Autowired
     private final AuthenticationManager authenticationManager;
 
 
-    public AuthenticationServiceImpl(IUserRepository userRepository, AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
+    public AuthenticationServiceImpl(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
