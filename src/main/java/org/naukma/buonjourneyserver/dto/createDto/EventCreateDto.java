@@ -1,6 +1,8 @@
-package org.naukma.buonjourneyserver.dto;
+package org.naukma.buonjourneyserver.dto.createDto;
 
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,9 +13,9 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventDto {
-    private Long id;
+public class EventCreateDto {
 
+    @NotBlank(message = "Title can not be blank")
     @Size(max = 100, message = "Title length can be maximum 100 characters")
     private String title;
 
@@ -25,4 +27,7 @@ public class EventDto {
 
     @Size(max = 100, message = "Address length can be maximum 100 characters")
     private String address;
+
+    @NotNull
+    private Long tripId;
 }
