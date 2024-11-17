@@ -1,6 +1,7 @@
 package org.naukma.buonjourneyserver.exceptions;
 
 import jakarta.validation.ConstraintViolation;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
@@ -9,12 +10,10 @@ import java.util.Set;
 
 public class ExceptionHelper {
     public static String formErrorMessage(BindingResult bindingResult) {
-        List<ObjectError> allErrors = bindingResult.getAllErrors();
-        String message = "Validation failed: ";
-        for (ObjectError o : allErrors){
-            message+=o.getDefaultMessage()+"\n";
-        }
-        return message;
+        return bindingResult.getAllErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .reduce((msg1, msg2) -> msg1 + "; " + msg2)
+                .orElse("Validation failed");
     }
     public static <T> String formErrorMessage(Set<ConstraintViolation<T>> violations) {
         String message = "Validation failed: ";
