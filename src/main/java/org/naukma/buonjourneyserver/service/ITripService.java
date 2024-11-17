@@ -2,9 +2,21 @@ package org.naukma.buonjourneyserver.service;
 
 
 import org.naukma.buonjourneyserver.dto.EventDto;
+import org.naukma.buonjourneyserver.dto.TripDto;
+import org.naukma.buonjourneyserver.dto.createDto.TripCreateDto;
+import org.naukma.buonjourneyserver.dto.updateDto.TripUpdateDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ITripService {
+    List<TripDto> getAllByUserId(Long userId);
+
+    TripDto createTrip(TripCreateDto tripDto);
+
+    TripDto updateTrip(TripUpdateDto tripDto);
+
+    void deleteTrip(Long tripId);
+
+    TripDto getTripById(Long tripId);
 }

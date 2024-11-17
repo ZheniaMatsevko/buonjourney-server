@@ -5,17 +5,23 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.naukma.buonjourneyserver.dto.EventDto;
+import org.naukma.buonjourneyserver.dto.TripDto;
+import org.naukma.buonjourneyserver.dto.UserDto;
+import org.naukma.buonjourneyserver.dto.createDto.EventCreateDto;
 import org.naukma.buonjourneyserver.entity.EventEntity;
+import org.naukma.buonjourneyserver.entity.TripEntity;
 import org.naukma.buonjourneyserver.mapper.IEventMapper;
+import org.naukma.buonjourneyserver.mapper.ITripMapper;
+import org.naukma.buonjourneyserver.mapper.IUserMapper;
 import org.naukma.buonjourneyserver.repository.IEventRepository;
 import org.naukma.buonjourneyserver.service.IEventService;
+import org.naukma.buonjourneyserver.service.ITripService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,66 +29,63 @@ import java.util.stream.Collectors;
 public class EventService implements IEventService {
 
     private final IEventRepository eventRepository;
-
-    public List<EventDto> getAll() {
-        return eventRepository.findAll().stream().map(IEventMapper.INSTANCE::entityToDto).collect(Collectors.toList());
-    }
+    private final ITripService tripService;
 
     @Override
     @Transactional
-    public EventDto addEvent(EventDto event) {
+    public EventDto createEvent(EventCreateDto event) {
         log.info("Creating event");
-        EventEntity createdEvent = eventRepository.save(IEventMapper.INSTANCE.dtoToEntity(event));
+
+        TripDto tripDto = tripService.getTripById(event.getTripId());
+
+        EventEntity eventToCreate = IEventMapper.INSTANCE.createDtoToEntity(event);
+        eventToCreate.setTrip(ITripMapper.INSTANCE.dtoToEntity(tripDto));
+
+        EventEntity createdEvent = eventRepository.save(eventToCreate);
+
         log.info("Event created successfully.");
         return IEventMapper.INSTANCE.entityToDto(createdEvent);
     }
 
     @Transactional
     @Override
-    public EventDto updateEvent(EventDto event) {
+    public EventDto updateEvent(EventDto event) throws EntityNotFoundException {
         Optional<EventEntity> optional = eventRepository.findById(event.getId());
-        /*if(optional.isPresent()){
+        if (optional.isPresent()) {
             EventEntity eventEntity = optional.get();
-            eventEntity.setCapacity(event.getCapacity());
-            eventEntity.setDescription(event.getDescription());
-            eventEntity.setCaption(event.getCaption());
-            eventEntity.setAddress(IAddressMapper.INSTANCE.dtoToEntity(event.getAddress()));
-            eventEntity.setDateTime(event.getDateTime());
-            eventEntity.setPrice(event.getPrice());
-            eventEntity.setOnline(event.isOnline());
-            EventEntity editedEvent = eventRepository.save(eventEntity);
-            log.info("Updating event with id "+editedEvent.getId());
-            try {
-                if(file!=null && !file.isEmpty()){
-                    String imagePath= ImagesManager.saveEventImage(file,event.getOrganiser().getId(),editedEvent.getId());
-                    eventRepository.updateImageUrl(editedEvent.getId(),imagePath);
-                    editedEvent.setImageUrl(imagePath);
-                }
-                log.info("Event edited successfully.");
-                return IEventMapper.INSTANCE.entityToDto(editedEvent);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-        }else{
-            throw new EntityNotFoundException("Event not found for editing");
-        }*/
-        return null;
-    }
 
-    @Override
-    public void deleteEvent(Long eventId) {
-        if (eventRepository.existsById(eventId)) {
-            Optional<EventEntity> event = eventRepository.findById(eventId);
-            eventRepository.deleteById(eventId);
-            log.info("Deleted event with ID: {}", eventId);
+            eventEntity.setAddress(event.getAddress() == null ? eventEntity.getAddress() : event.getAddress());
+            eventEntity.setTitle(event.getTitle() == null ? eventEntity.getTitle() : event.getTitle());
+            eventEntity.setDateTime(event.getDateTime() == null ? eventEntity.getDateTime() : event.getDateTime());
+            eventEntity.setDescription(event.getDescription() == null ? eventEntity.getDescription() : event.getDescription());
+
+            EventEntity editedEvent = eventRepository.save(eventEntity);
+            log.info("Updated event with id " + editedEvent.getId());
+
+            return IEventMapper.INSTANCE.entityToDto(editedEvent);
         } else {
-            log.warn("Event not found for deletion with ID: {}", eventId);
+            throw new EntityNotFoundException("Event not found for editing");
         }
     }
 
     @Override
-    public EventDto getEventById(Long eventId) {
+    public void deleteEvent(Long eventId) throws EntityNotFoundException {
+        if (eventRepository.existsById(eventId)) {
+            eventRepository.deleteById(eventId);
+            log.info("Deleted event with ID: {}", eventId);
+        } else {
+            throw new EntityNotFoundException("Event not found for deletion");
+        }
+    }
+
+    @Override
+    public List<EventDto> getAllEventsByTripId(Long tripId) {
+        List<EventEntity> eventEntities = eventRepository.findAllByTripId(tripId);
+        return eventEntities.stream().map(IEventMapper.INSTANCE::entityToDto).toList();
+    }
+
+    @Override
+    public EventDto getEventById(Long eventId) throws EntityNotFoundException {
         EventEntity event = eventRepository.findById(eventId).orElse(null);
         if (event != null) {
             log.info("Retrieved event with ID: {}", event.getId());

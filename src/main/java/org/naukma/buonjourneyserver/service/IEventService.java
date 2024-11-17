@@ -2,14 +2,15 @@ package org.naukma.buonjourneyserver.service;
 
 
 import org.naukma.buonjourneyserver.dto.EventDto;
+import org.naukma.buonjourneyserver.dto.createDto.EventCreateDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface IEventService {
-    List<EventDto> getAll();
+    List<EventDto> getAllEventsByTripId(Long tripId);
 
-    EventDto addEvent(EventDto event);
+    EventDto createEvent(EventCreateDto event);
 
     EventDto updateEvent(EventDto event);
 

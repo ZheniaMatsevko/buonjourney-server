@@ -1,9 +1,8 @@
 package org.naukma.buonjourneyserver.service;
 
-import org.naukma.buonjourneyserver.dto.ChangePasswordDto;
+import org.naukma.buonjourneyserver.dto.updateDto.ChangePasswordDto;
 import org.naukma.buonjourneyserver.dto.UserDto;
-import org.naukma.buonjourneyserver.dto.UserUpdateDto;
-import org.springframework.web.multipart.MultipartFile;
+import org.naukma.buonjourneyserver.dto.updateDto.UserUpdateDto;
 
 public interface IUserService {
     UserDto createUser(UserDto user);
