@@ -1,5 +1,6 @@
 package org.naukma.buonjourneyserver.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -28,22 +29,22 @@ public class UserEntity {
     private String name;
 
     @NotNull
-    @Size(min = 6)
+    @Size(min = 8)
     @Column(nullable = false)
     private String password;
 
     @Email
     @NotNull
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 100, unique = true)
     private String email;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<PlaceEntity> placesToVisit;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TripEntity> trips;
 }

@@ -25,4 +25,10 @@ public class EventEntity {
 
     @Column(length = 100)
     private String address;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "trip_id", nullable = false)
+    private TripEntity trip;
 }

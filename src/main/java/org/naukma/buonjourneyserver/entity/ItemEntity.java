@@ -1,9 +1,7 @@
 package org.naukma.buonjourneyserver.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Entity
@@ -19,4 +17,10 @@ public class ItemEntity {
     private String name;
 
     private boolean isPacked;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "packing_list_id", nullable = false)
+    private PackingListEntity packingList;
 }

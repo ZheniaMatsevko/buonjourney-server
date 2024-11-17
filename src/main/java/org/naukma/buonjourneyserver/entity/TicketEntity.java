@@ -1,9 +1,7 @@
 package org.naukma.buonjourneyserver.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.naukma.buonjourneyserver.entity.enums.TicketType;
 
 import java.time.LocalDateTime;
@@ -30,4 +28,10 @@ public class TicketEntity {
 
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "trip_id", nullable = false)
+    private TripEntity trip;
 }
