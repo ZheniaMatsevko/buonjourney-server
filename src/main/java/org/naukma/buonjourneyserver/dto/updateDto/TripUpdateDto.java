@@ -1,7 +1,6 @@
 package org.naukma.buonjourneyserver.dto.updateDto;
 
 import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;

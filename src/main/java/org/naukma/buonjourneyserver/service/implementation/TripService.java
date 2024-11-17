@@ -14,7 +14,6 @@ import org.naukma.buonjourneyserver.repository.ITripRepository;
 import org.naukma.buonjourneyserver.service.ITripService;
 import org.naukma.buonjourneyserver.service.IUserService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;

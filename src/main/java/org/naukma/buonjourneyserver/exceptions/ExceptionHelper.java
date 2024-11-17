@@ -3,9 +3,7 @@ package org.naukma.buonjourneyserver.exceptions;
 import jakarta.validation.ConstraintViolation;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 
-import java.util.List;
 import java.util.Set;
 
 public class ExceptionHelper {

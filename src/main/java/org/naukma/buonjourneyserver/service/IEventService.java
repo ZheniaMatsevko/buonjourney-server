@@ -3,7 +3,6 @@ package org.naukma.buonjourneyserver.service;
 
 import org.naukma.buonjourneyserver.dto.EventDto;
 import org.naukma.buonjourneyserver.dto.createDto.EventCreateDto;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

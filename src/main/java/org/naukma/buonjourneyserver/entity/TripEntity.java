@@ -1,6 +1,5 @@
 package org.naukma.buonjourneyserver.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.naukma.buonjourneyserver.entity.enums.TripStatus;

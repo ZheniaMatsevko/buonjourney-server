@@ -6,20 +6,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.naukma.buonjourneyserver.dto.EventDto;
 import org.naukma.buonjourneyserver.dto.TripDto;
-import org.naukma.buonjourneyserver.dto.UserDto;
 import org.naukma.buonjourneyserver.dto.createDto.EventCreateDto;
 import org.naukma.buonjourneyserver.entity.EventEntity;
-import org.naukma.buonjourneyserver.entity.TripEntity;
 import org.naukma.buonjourneyserver.mapper.IEventMapper;
 import org.naukma.buonjourneyserver.mapper.ITripMapper;
-import org.naukma.buonjourneyserver.mapper.IUserMapper;
 import org.naukma.buonjourneyserver.repository.IEventRepository;
 import org.naukma.buonjourneyserver.service.IEventService;
 import org.naukma.buonjourneyserver.service.ITripService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

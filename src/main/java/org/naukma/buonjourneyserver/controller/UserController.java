@@ -1,14 +1,12 @@
 package org.naukma.buonjourneyserver.controller;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.naukma.buonjourneyserver.dto.updateDto.ChangePasswordDto;
-import org.naukma.buonjourneyserver.exceptions.ExceptionHelper;
 import org.naukma.buonjourneyserver.dto.UserDto;
+import org.naukma.buonjourneyserver.dto.updateDto.ChangePasswordDto;
 import org.naukma.buonjourneyserver.dto.updateDto.UserUpdateDto;
-import org.naukma.buonjourneyserver.exceptions.InvalidOldPasswordException;
+import org.naukma.buonjourneyserver.exceptions.ExceptionHelper;
 import org.naukma.buonjourneyserver.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

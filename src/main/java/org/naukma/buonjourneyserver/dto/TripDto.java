@@ -1,9 +1,5 @@
 package org.naukma.buonjourneyserver.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.naukma.buonjourneyserver.entity.enums.TripStatus;
 
