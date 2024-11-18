@@ -34,6 +34,15 @@ public class PlaceController {
         return placeDto;
     }
 
+    @PostMapping("/multiple")
+    public List<PlaceDto> createPlaces(@RequestBody @Valid List<PlaceCreateDto> placeCreateDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = ExceptionHelper.formErrorMessage(bindingResult);
+            throw new ValidationException(message);
+        }
+        return placeService.createMultiple(placeCreateDto);
+    }
+
     @PutMapping("/{id}")
     public PlaceDto updatePlace(@PathVariable Long id, @RequestBody @Valid PlaceDto placeUpdateDto,
                                 BindingResult bindingResult) {

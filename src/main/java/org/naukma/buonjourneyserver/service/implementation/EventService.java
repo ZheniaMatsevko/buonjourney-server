@@ -16,6 +16,7 @@ import org.naukma.buonjourneyserver.service.ITripService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +29,7 @@ public class EventService implements IEventService {
     private final ITripService tripService;
 
     @Override
-    @Transactional
-    public EventDto createEvent(EventCreateDto event) {
+    public EventDto createEvent(EventCreateDto event) throws EntityNotFoundException{
         log.info("Creating event");
 
         TripDto tripDto = tripService.getTripById(event.getTripId());
@@ -90,5 +90,14 @@ public class EventService implements IEventService {
             throw new EntityNotFoundException("Event with id " + eventId + " not found");
         }
         return IEventMapper.INSTANCE.entityToDto(event);
+    }
+
+    @Override
+    public List<EventDto> createMultiple(List<EventCreateDto> eventCreateDtos) {
+        List<EventDto> events = new ArrayList<>();
+        for(EventCreateDto eventCreateDto: eventCreateDtos){
+            events.add(this.createEvent(eventCreateDto));
+        }
+        return events;
     }
 }

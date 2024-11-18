@@ -14,6 +14,7 @@ import org.naukma.buonjourneyserver.service.IPlaceService;
 import org.naukma.buonjourneyserver.service.IUserService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ public class PlaceService implements IPlaceService {
     }
 
     @Override
-    public PlaceDto createPlace(PlaceCreateDto place) {
+    public PlaceDto createPlace(PlaceCreateDto place) throws EntityNotFoundException{
         log.info("Creating place");
 
         UserDto user = userService.getUserById(place.getUserId());
@@ -84,5 +85,14 @@ public class PlaceService implements IPlaceService {
             throw new EntityNotFoundException("Place with id " + placeId + " not found");
         }
         return IPlaceMapper.INSTANCE.entityToDto(placeEntity);
+    }
+
+    @Override
+    public List<PlaceDto> createMultiple(List<PlaceCreateDto> placeCreateDtos) {
+        List<PlaceDto> places = new ArrayList<>();
+        for(PlaceCreateDto placeCreateDto: placeCreateDtos){
+            places.add(this.createPlace(placeCreateDto));
+        }
+        return places;
     }
 }

@@ -16,4 +16,6 @@ public interface IEventService {
     void deleteEvent(Long eventId);
 
     EventDto getEventById(Long eventId);
+
+    List<EventDto> createMultiple(List<EventCreateDto> eventCreateDtos);
 }

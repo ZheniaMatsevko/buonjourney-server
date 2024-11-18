@@ -4,13 +4,9 @@ import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.naukma.buonjourneyserver.dto.EventDto;
-import org.naukma.buonjourneyserver.dto.TripDto;
 import org.naukma.buonjourneyserver.dto.createDto.EventCreateDto;
-import org.naukma.buonjourneyserver.dto.createDto.TripCreateDto;
-import org.naukma.buonjourneyserver.dto.updateDto.TripUpdateDto;
 import org.naukma.buonjourneyserver.exceptions.ExceptionHelper;
 import org.naukma.buonjourneyserver.service.IEventService;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +30,15 @@ public class EventController {
         EventDto eventDto = eventService.createEvent(eventCreateDto);
         log.info("Event created with ID: {}", eventDto.getId());
         return eventDto;
+    }
+
+    @PostMapping("/multiple")
+    public List<EventDto> createEvents(@RequestBody @Valid List<EventCreateDto> eventCreateDtos, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = ExceptionHelper.formErrorMessage(bindingResult);
+            throw new ValidationException(message);
+        }
+        return eventService.createMultiple(eventCreateDtos);
     }
 
     @PutMapping("/{id}")
