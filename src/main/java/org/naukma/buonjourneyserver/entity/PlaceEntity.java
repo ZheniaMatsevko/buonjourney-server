@@ -1,9 +1,7 @@
 package org.naukma.buonjourneyserver.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Entity
@@ -18,8 +16,15 @@ public class PlaceEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(length = 500)
     private String address;
 
     @Column(length = 1000)
     private String description;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 }

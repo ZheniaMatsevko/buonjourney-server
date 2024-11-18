@@ -35,7 +35,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateDto userUpdateDto,
-            BindingResult bindingResult) {
+                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message = ExceptionHelper.formErrorMessage(bindingResult);
             throw new ValidationException(message);
@@ -61,13 +61,8 @@ public class UserController {
 
     @PutMapping("/password")
     public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordDto request) {
-        try {
-            userService.changePassword(request);
-            return ResponseEntity.ok("The password was changed successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error to change password.");
-        }
+        userService.changePassword(request);
+        return ResponseEntity.ok("The password was changed successfully");
     }
 
     @ExceptionHandler(Exception.class)

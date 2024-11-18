@@ -3,8 +3,8 @@ package org.naukma.buonjourneyserver.service.implementation;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.naukma.buonjourneyserver.dto.updateDto.ChangePasswordDto;
 import org.naukma.buonjourneyserver.dto.UserDto;
+import org.naukma.buonjourneyserver.dto.updateDto.ChangePasswordDto;
 import org.naukma.buonjourneyserver.dto.updateDto.UserUpdateDto;
 import org.naukma.buonjourneyserver.entity.UserEntity;
 import org.naukma.buonjourneyserver.exceptions.InvalidOldPasswordException;
@@ -36,6 +36,7 @@ public class UserService implements IUserService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setPlacesToVisit(new ArrayList<>());
+        user.setTrips(new ArrayList<>());
 
         checkNewEmail(user.getEmail());
         checkNewUsername(user.getUsername());
