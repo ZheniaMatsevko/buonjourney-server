@@ -23,7 +23,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TripService  implements ITripService {
+public class TripService implements ITripService {
     private final ITripRepository tripRepository;
     private final IUserService userService;
 
@@ -36,7 +36,7 @@ public class TripService  implements ITripService {
 
     @Override
     @Transactional
-    public TripDto createTrip(TripCreateDto tripDto) {
+    public TripDto createTrip(TripCreateDto tripDto) throws EntityNotFoundException {
         log.info("Creating trip");
 
         UserDto user = userService.getUserById(tripDto.getUserId());
@@ -55,7 +55,7 @@ public class TripService  implements ITripService {
     }
 
     @Override
-    public TripDto updateTrip(TripUpdateDto tripDto) throws EntityNotFoundException{
+    public TripDto updateTrip(TripUpdateDto tripDto) throws EntityNotFoundException {
         Optional<TripEntity> optional = tripRepository.findById(tripDto.getId());
         if (optional.isPresent()) {
             TripEntity tripEntity = optional.get();
@@ -76,7 +76,7 @@ public class TripService  implements ITripService {
     }
 
     @Override
-    public void deleteTrip(Long tripId) throws EntityNotFoundException{
+    public void deleteTrip(Long tripId) throws EntityNotFoundException {
         if (tripRepository.existsById(tripId)) {
             tripRepository.deleteById(tripId);
             log.info("Deleted trip with ID: {}", tripId);
@@ -86,7 +86,7 @@ public class TripService  implements ITripService {
     }
 
     @Override
-    public TripDto getTripById(Long tripId) throws EntityNotFoundException{
+    public TripDto getTripById(Long tripId) throws EntityNotFoundException {
         TripEntity trip = tripRepository.findById(tripId).orElse(null);
         if (trip != null) {
             log.info("Retrieved trip with ID: {}", trip.getId());

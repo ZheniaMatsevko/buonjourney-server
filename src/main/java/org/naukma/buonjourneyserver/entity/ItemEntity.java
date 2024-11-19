@@ -20,7 +20,7 @@ public class ItemEntity {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "packing_list_id", nullable = false)
     private PackingListEntity packingList;
 }
