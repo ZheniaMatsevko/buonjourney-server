@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -138,6 +139,11 @@ public class UserService implements IUserService {
             log.warn("UserEntity not found with ID: {}", changePassword.getUserId());
             throw new EntityNotFoundException("User with id " + changePassword.getUserId() + " not found");
         }
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream().map(IUserMapper.INSTANCE::entityToDto).toList();
     }
 
     private void checkOldPassword(String oldPassword, String passwordInDb) throws InvalidOldPasswordException{

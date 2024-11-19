@@ -7,6 +7,8 @@ import org.naukma.buonjourneyserver.dto.EventDto;
 import org.naukma.buonjourneyserver.dto.createDto.EventCreateDto;
 import org.naukma.buonjourneyserver.exceptions.ExceptionHelper;
 import org.naukma.buonjourneyserver.service.IEventService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,5 +73,12 @@ public class EventController {
     public List<EventDto> getAllEventsByTripId(@RequestParam Long tripId) {
         log.info("Retrieving all events for trip with ID: {}", tripId);
         return eventService.getAllEventsByTripId(tripId);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e) {
+        String errorMessage = "ERROR: " + e.getMessage();
+        log.error(errorMessage);
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

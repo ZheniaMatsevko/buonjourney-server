@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -57,6 +58,11 @@ public class UserController {
     public UserDto getUserById(@PathVariable Long userId) {
         log.info("Retrieving user with ID: {}", userId);
         return userService.getUserById(userId);
+    }
+
+    @GetMapping
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @PutMapping("/password")

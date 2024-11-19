@@ -4,6 +4,8 @@ import org.naukma.buonjourneyserver.dto.updateDto.ChangePasswordDto;
 import org.naukma.buonjourneyserver.dto.UserDto;
 import org.naukma.buonjourneyserver.dto.updateDto.UserUpdateDto;
 
+import java.util.List;
+
 public interface IUserService {
     UserDto createUser(UserDto user);
 
@@ -16,4 +18,6 @@ public interface IUserService {
     UserDto getUserByEmail(String email);
 
     void changePassword(ChangePasswordDto changePassword);
+
+    List<UserDto> getAllUsers();
 }

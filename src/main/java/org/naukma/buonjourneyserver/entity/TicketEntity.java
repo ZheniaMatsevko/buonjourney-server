@@ -16,7 +16,6 @@ public class TicketEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 500)
     private String fileUrl;
 
     private LocalDateTime dateTime;
