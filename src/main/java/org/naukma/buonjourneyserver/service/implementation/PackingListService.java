@@ -64,6 +64,24 @@ public class PackingListService implements IPackingListService, IItemService {
         return resultList;
     }
 
+    @Override
+    public PackingListDto createPackingList(PackingListDto packingListDto, TripDto tripDto) {
+        PackingListEntity listToCreate = IPackingListMapper.INSTANCE.dtoToEntity(packingListDto);
+        listToCreate.setTrip(ITripMapper.INSTANCE.dtoToEntity(tripDto));
+        listToCreate.setItems(new ArrayList<>());
+
+        PackingListEntity createdList = packingListRepository.save(listToCreate);
+        PackingListDto resultList = IPackingListMapper.INSTANCE.entityToDto(createdList);
+
+        for (ItemDto itemDto : packingListDto.getItems()) {
+            resultList.getItems().add(this.addItem(itemDto, createdList));
+        }
+
+        log.info("Packing list created successfully.");
+
+        return resultList;
+    }
+
     @Transactional
     @Override
     public PackingListDto updatePackingList(PackingListDto packingList) throws EntityNotFoundException {

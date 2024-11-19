@@ -47,6 +47,19 @@ public class PlaceService implements IPlaceService {
     }
 
     @Override
+    public PlaceDto createPlace(PlaceDto place, UserDto user){
+        log.info("Creating place");
+
+        PlaceEntity placeToCreate = IPlaceMapper.INSTANCE.dtoToEntity(place);
+        placeToCreate.setUser(IUserMapper.INSTANCE.dtoToEntity(user));
+
+        PlaceEntity createdPlace = placeRepository.save(placeToCreate);
+
+        log.info("Place created successfully.");
+        return IPlaceMapper.INSTANCE.entityToDto(createdPlace);
+    }
+
+    @Override
     public PlaceDto updatePlace(PlaceDto place) throws EntityNotFoundException {
         Optional<PlaceEntity> optional = placeRepository.findById(place.getId());
         if (optional.isPresent()) {

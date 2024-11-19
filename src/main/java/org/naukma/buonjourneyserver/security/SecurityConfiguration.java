@@ -19,7 +19,7 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/events/**", "/places/**", "/packing/**",
-                                "/tickets/**", "/trips/**", "/items/**", "/users/**", "/signin"))
+                                "/tickets/**", "/trips/**", "/items/**", "/users/**", "/signin", "/synchronize"))
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(HttpMethod.GET, "/events/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/events/**").authenticated()
@@ -71,34 +71,3 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 }
-
-
-/*@Configuration
-@EnableMethodSecurity
-public class SecurityConfiguration {
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
-            throws Exception {
-        return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/events/**","/trips/**", "/items/**", "/users/**"))
-                .authorizeHttpRequests((authorize) -> authorize
-                        .anyRequest().permitAll()
-                )
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults());
-        return http.build();
-    }
-
-}*/

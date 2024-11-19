@@ -48,6 +48,17 @@ public class TicketService implements ITicketService {
         return ITicketMapper.INSTANCE.entityToDto(createdTicket);
     }
 
+    @Override
+    public TicketDto createTicket(TicketDto ticket, TripDto tripDto) {
+        TicketEntity ticketToCreate = ITicketMapper.INSTANCE.dtoToEntity(ticket);
+        ticketToCreate.setTrip(ITripMapper.INSTANCE.dtoToEntity(tripDto));
+
+        TicketEntity createdTicket = ticketRepository.save(ticketToCreate);
+
+        log.info("Ticket created successfully.");
+        return ITicketMapper.INSTANCE.entityToDto(createdTicket);
+    }
+
     @Transactional
     @Override
     public TicketDto updateTicket(TicketDto ticket) throws EntityNotFoundException {

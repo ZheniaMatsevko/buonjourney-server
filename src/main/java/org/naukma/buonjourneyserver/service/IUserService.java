@@ -1,7 +1,7 @@
 package org.naukma.buonjourneyserver.service;
 
-import org.naukma.buonjourneyserver.dto.updateDto.ChangePasswordDto;
 import org.naukma.buonjourneyserver.dto.UserDto;
+import org.naukma.buonjourneyserver.dto.updateDto.ChangePasswordDto;
 import org.naukma.buonjourneyserver.dto.updateDto.UserUpdateDto;
 
 import java.util.List;

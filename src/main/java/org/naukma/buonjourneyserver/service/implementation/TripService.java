@@ -55,6 +55,23 @@ public class TripService implements ITripService {
     }
 
     @Override
+    public TripDto createTrip(TripDto tripDto, UserDto userDto) {
+        log.info("Creating trip");
+
+        TripEntity tripToCreate = ITripMapper.INSTANCE.dtoToEntity(tripDto);
+
+        tripToCreate.setEvents(new ArrayList<>());
+        tripToCreate.setTickets(new ArrayList<>());
+        tripToCreate.setPackingLists(new ArrayList<>());
+        tripToCreate.setUser(IUserMapper.INSTANCE.dtoToEntity(userDto));
+
+        TripEntity createdTrip = tripRepository.save(tripToCreate);
+
+        log.info("Trip created successfully.");
+        return ITripMapper.INSTANCE.entityToDto(createdTrip);
+    }
+
+    @Override
     public TripDto updateTrip(TripUpdateDto tripDto) throws EntityNotFoundException {
         Optional<TripEntity> optional = tripRepository.findById(tripDto.getId());
         if (optional.isPresent()) {

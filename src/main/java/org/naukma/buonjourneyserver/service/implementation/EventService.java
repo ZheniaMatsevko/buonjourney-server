@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.naukma.buonjourneyserver.dto.EventDto;
 import org.naukma.buonjourneyserver.dto.TripDto;
+import org.naukma.buonjourneyserver.dto.UserDto;
 import org.naukma.buonjourneyserver.dto.createDto.EventCreateDto;
 import org.naukma.buonjourneyserver.entity.EventEntity;
 import org.naukma.buonjourneyserver.mapper.IEventMapper;
@@ -36,6 +37,17 @@ public class EventService implements IEventService {
 
         EventEntity eventToCreate = IEventMapper.INSTANCE.createDtoToEntity(event);
         eventToCreate.setTrip(ITripMapper.INSTANCE.dtoToEntity(tripDto));
+
+        EventEntity createdEvent = eventRepository.save(eventToCreate);
+
+        log.info("Event created successfully.");
+        return IEventMapper.INSTANCE.entityToDto(createdEvent);
+    }
+
+    @Override
+    public EventDto createEvent(EventDto event, TripDto trip) {
+        EventEntity eventToCreate = IEventMapper.INSTANCE.dtoToEntity(event);
+        eventToCreate.setTrip(ITripMapper.INSTANCE.dtoToEntity(trip));
 
         EventEntity createdEvent = eventRepository.save(eventToCreate);
 
